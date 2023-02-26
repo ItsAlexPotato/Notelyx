@@ -132,7 +132,21 @@ class NoteApp:
                 if not notes:
                     print("\033[91mNo notes found.\033[0m")
                     continue
-                self.notebook.export_to_file(filename)
+                print("Which notes do you want to export?")
+                print("Enter a comma-separated list of note indexes, or 'all' to export all notes.")
+                print("For example: '0,2,3' or 'all'")
+                note_indexes = input("> ")
+                if note_indexes.lower() == "all":
+                    notes_to_export = notes
+                else:
+                    try:
+                        note_indexes = [int(index.strip()) for index in note_indexes.split(",")]
+                        notes_to_export = [notes[index] for index in note_indexes]
+                    except (ValueError, IndexError):
+                        print(
+                            "\033[91mInvalid note indexes. Please enter a valid comma-separated list of note indexes, or 'all'.\033[0m")
+                        continue
+                self.notebook.export_to_file(filename, notes_to_export=notes_to_export)
                 print(f"\033[92mNotes exported to '{filename}'.\033[0m")
             elif command == "quit":
                 confirm = input("Are you sure you want to quit? Any unsaved changes will be lost. (y/n): ")
