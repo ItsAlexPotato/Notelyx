@@ -47,9 +47,11 @@ class Notebook:
 
         note.tags.extend(tags)
 
-    def export_to_file(self, filename):
+    def export_to_file(self, filename, notes_to_export=None):
+        if notes_to_export is None:
+            notes_to_export = self.notes
         with open(filename, "w") as f:
-            for note in self.notes:
+            for note in notes_to_export:
                 f.write(f"{note.title}\n")
                 f.write(f"{note.creation_date}\n")
                 f.write(f"{note.tags}\n")
